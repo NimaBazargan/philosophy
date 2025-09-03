@@ -1,0 +1,26 @@
+{% load static %}
+{% load blog_tags %}
+<div class="col-eight md-six tab-full popular">
+    <h3>Popular Posts</h3>
+
+    <div class="block-1-2 block-m-full popular__posts">
+        {% for post in posts %}
+        <article class="col-block popular__post">
+            <a href="{% url 'blog:single' pid=post.id %}" class="popular__thumb">
+                {% if post.type.type == "Standard" %}
+                <img src="{{post.image.url}}" alt="">
+                {% elif post.type.type == "Video" %}
+                <video src="{{post.video.url}}" alt="" style="width: 20%;">
+                {% elif post.type.type == "Gallery" %}
+                <img src="{{post.image.url}}" alt="">
+                {% endif %}
+            </a>
+            <h5><a href="{% url 'blog:single' pid=post.id %}">{{post.title}}</a></h5>
+            <section class="popular__meta">
+                <span class="popular__author"><span>By</span> <a href="#0">{{post.author.get_full_name}}</a></span>
+                <span class="popular__date"><span>on</span> <time datetime="2017-12-19">{% time pid=post.id %}</time></span>
+            </section>
+        </article>
+        {% endfor %}
+    </div> <!-- end popular_posts -->
+</div> <!-- end popular -->

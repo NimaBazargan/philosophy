@@ -1,0 +1,66 @@
+{% load static %}
+<div class="featured">
+    {% for post in posts %}
+    {% if forloop.first %}
+    <div class="featured__column featured__column--big">
+        {% if post.type.type == "Standard" %}
+        <div class="entry" style="background-image:url('{{post.image.url}}');">
+            {% elif post.type.type == "Video" %}
+            <div class="entry">
+                <video autoplay muted loop id="bg-video">
+                    <source src="{{post.video.url}}" type="video/mp4">
+                </video>
+                {% elif post.type.type == "Gallery" %}
+                <div class="entry" style="background-image:url('{{post.image.url}}');">
+                    {% endif %}
+                    <div class="entry__content">
+                        {% for cat in post.category.all %}
+                        <span class="entry__category"><a href="#0">{{cat}}</a></span>
+                        {% endfor %}
+                        <h1><a href="{% url 'blog:single' pid=post.id %}" title="">{{post.title}}</a>
+                        </h1>
+
+                        <div class="entry__info">
+
+                            <ul class="entry__meta">
+                                <li><a href="#0">{{post.author.get_full_name}}</a></li>
+                                <li>{{post.published_date|date:"D d/M/y"}}</li>
+                            </ul>
+                        </div>
+                    </div> <!-- end entry__content -->
+
+                </div> <!-- end entry -->
+            </div> <!-- end featured__big -->
+            {% else %}
+            <div class="featured__column featured__column--small">
+                {% if post.type.type == "Standard" %}
+                <div class="entry" style="background-image:url('{{post.image.url}}');">
+                    {% elif post.type.type == "Video" %}
+                    <div class="entry">
+                        <video autoplay muted loop id="bg-video">
+                            <source src="{{post.video.url}}" type="video/mp4">
+                        </video>
+                        {% elif post.type.type == "Gallery" %}
+                        <div class="entry" style="background-image:url('{{post.image.url}}');">
+                            {% endif %}
+                            <div class="entry__content">
+                                {% for cat in post.category.all %}
+                                <span class="entry__category"><a href="#0">{{cat}}</a></span>
+                                {% endfor %}
+                                <h1><a href="{% url 'blog:single' pid=post.id %}" title="">{{post.title}}</a></h1>
+
+                                <div class="entry__info">
+
+                                    <ul class="entry__meta">
+                                        <li><a href="#0">{{post.author.get_full_name}}</a></li>
+                                        <li>{{post.published_date|date:"D d/M/y"}}</li>
+                                    </ul>
+                                </div>
+                            </div> <!-- end entry__content -->
+
+                        </div> <!-- end entry -->
+
+                    </div> <!-- end featured__small -->
+                    {% endif %}
+                    {% endfor %}
+                </div> <!-- end featured -->

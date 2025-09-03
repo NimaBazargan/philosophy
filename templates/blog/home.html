@@ -1,0 +1,153 @@
+{% load static %}
+<!-- s-content
+    ================================================== -->
+<section class="s-content">
+
+    <div class="row masonry-wrap">
+        <div class="masonry">
+
+            <div class="grid-sizer"></div>
+            {% for post in posts %}
+            {% if post.type.type == "Standard" %}
+            <article class="masonry__brick entry format-standard" data-aos="fade-up">
+
+                <div class="entry__thumb">
+                    <a href="{% url 'blog:single' pid=post.id %}" class="entry__thumb-link">
+                        <img src="{{post.image.url}}" srcset="{{post.image.url}} 1x, {{post.image.url}} 2x" alt="">
+                    </a>
+                </div>
+
+                <div class="entry__text">
+                    <div class="entry__header">
+
+                        <div class="entry__date">
+                            <a href="single-standard.html">{{post.published_date|date:"D d/M/y"}}</a>
+                        </div>
+                        <h1 class="entry__title"><a href="{% url 'blog:single' pid=post.id %}">{{post.title}}</a></h1>
+
+                    </div>
+                    <div class="entry__excerpt">
+                        <p>
+                            {{post.content|truncatewords:30|safe}}
+                        </p>
+                    </div>
+                    <div class="entry__meta">
+                        <span class="entry__meta-links">
+                            {% for cat in post.category.all %}
+                            <a href="category.html">{{cat}}</a>
+                            {% endfor %}
+                        </span>
+                    </div>
+                </div>
+
+            </article> <!-- end article -->
+            {% elif post.type.type == "Video" %}
+            <article class="masonry__brick entry format-video" data-aos="fade-up">
+
+                <div class="entry__thumb video-image">
+                    <a href="{% url 'blog:single' pid=post.id %}" class="entry__thumb-link">
+                        <video controls>
+                        <source src="{{post.video.url}}">
+                        </video>
+                        <!-- <img src="{% static 'images/thumbs/masonry/shutterbug-400.jpg' %}"
+                            srcset="{% static 'images/thumbs/masonry/shutterbug-400.jpg' %} 1x, {% static 'images/thumbs/masonry/shutterbug-800.jpg' %} 2x"
+                            alt=""> -->
+                    </a>
+                </div>
+
+                <div class="entry__text">
+                    <div class="entry__header">
+
+                        <div class="entry__date">
+                            <a href="single-video.html">{{post.published_date|date:"D d/M/y"}}</a>
+                        </div>
+                        <h1 class="entry__title"><a href="{% url 'blog:single' pid=post.id %}">{{post.title}}</a>
+                        </h1>
+
+                    </div>
+                    <div class="entry__excerpt">
+                        <p>
+                           {{post.content|truncatewords:30|safe}}
+                        </p>
+                    </div>
+                    <div class="entry__meta">
+                        <span class="entry__meta-links">
+                            {% for cat in post.category.all %}
+                            <a href="category.html">{{cat}}</a>
+                            {% endfor %}
+                        </span>
+                    </div>
+                </div>
+
+            </article> <!-- end article -->
+            {% elif post.type.type == "Gallery" %}
+            <article class="masonry__brick entry format-gallery" data-aos="fade-up">
+
+                <div class="entry__thumb slider">
+                    <div class="slider__slides">
+                        {% for gallery in gallerys %}
+                        {% if gallery.post.id == post.id %}
+                        <div class="slider__slide">
+                            <img src="{{gallery.image.url}}"
+                                srcset="{{gallery.image.url}} 1x, {{gallery.image.url}} 2x"
+                                alt="">
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="entry__text">
+                    <div class="entry__header">
+
+                        <div class="entry__date">
+                            <a href="single-gallery.html">{{post.published_date|date:"D d/M/y"}}</a>
+                        </div>
+                        <h1 class="entry__title"><a href="{% url 'blog:single' pid=post.id %}">{{post.title}}</a>
+                        </h1>
+
+                    </div>
+                    <div class="entry__excerpt">
+                        <p>
+                            {{post.content|truncatewords:30|safe}}
+                        </p>
+                    </div>
+                    <div class="entry__meta">
+                        <span class="entry__meta-links">
+                            {% for cat in post.category.all %}
+                            <a href="category.html">{{cat}}</a>
+                            {% endfor %}
+                        </span>
+                    </div>
+                </div>
+
+            </article> <!-- end article -->
+            {% endif %}
+            {% endfor %}
+
+        </div> <!-- end masonry -->
+    </div> <!-- end masonry-wrap -->
+
+    <div class="row">
+        <div class="col-full">
+            <nav class="pgn">
+                <ul>
+                    {% if posts.has_previous %}
+                    <li><a class="pgn__prev" href="?page={{posts.previuos_page_number}}">Prev</a></li>
+                    {% endif %}
+                    {% for i in posts.paginator.page_range %}
+                    {% if posts.number == i %}
+                    <li><a class="pgn__num current" href="?page={{i}}">{{i}}</a></li>
+                    {% else %}
+                    <li><a class="pgn__num" href="?page={{i}}">{{i}}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if posts.has_next %}
+                    <li><a class="pgn__next" href="?page={{posts.next_page_number}}">Next</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</section> <!-- s-content -->
