@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 
 def index_view(request):
-    posts = Post.objects.filter(status = 1, published_date__lte = timezone.now())
+    posts = Post.objects.filter(status = 1, published_date__lte = timezone.now()).order_by('-published_date')
     gallerys = Gallery.objects.all()
     posts = Paginator(posts,4)
     try:

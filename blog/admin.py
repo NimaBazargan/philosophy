@@ -12,6 +12,7 @@ class PostAdmin(SummernoteModelAdmin):
     empty_value_display = '-empty-'
     list_display = ['title','type','author','status','views','published_date','created_date',]
     list_filter = ['status','type','author','published_date',]
+    ordering = ['-published_date',]
     search_fields = ['title','content',]
     summernote_fields = ['content',]
 

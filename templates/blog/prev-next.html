@@ -1,0 +1,20 @@
+<div class="s-content__pagenav">
+    <div class="s-content__nav">
+        {% if index != 0 %}
+        <div class="s-content__prev">
+            <a href="{% url 'blog:single' pid=prev_post.id %}" rel="prev">
+                <span>Previous Post</span>
+                {{prev_post.title}}
+            </a>
+        </div>
+        {% endif %}
+		{% if index != len_list %}
+        <div class="s-content__next">
+            <a href="{% url 'blog:single' pid=next_post.id %}" rel="next">
+                <span>Next Post</span>
+                {{next_post.title}}
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div> <!-- end s-content__pagenav -->

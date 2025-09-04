@@ -16,7 +16,7 @@ def sigle_view(request,pid):
     return render(request,'blog/single.html',context)
 
 def index_view(request,**kwargs):
-    posts = Post.objects.filter(status = 1, published_date__lte = timezone.now())
+    posts = Post.objects.filter(status = 1, published_date__lte = timezone.now()).order_by('-published_date')
     gallerys = Gallery.objects.all()
     if kwargs.get('type'):
         posts = posts.filter(type__type = kwargs['type'])

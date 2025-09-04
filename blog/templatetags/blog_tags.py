@@ -8,7 +8,7 @@ register = template.Library()
 
 @register.inclusion_tag('blog/lastest-post.html')
 def lastest_post(arg=3):
-    posts = Post.objects.filter(status = 1, published_date__lte = timezone.now())[:arg]
+    posts = Post.objects.filter(status = 1, published_date__lte = timezone.now()).order_by('-published_date')[:arg]
     gallerys = Gallery.objects.all()
     for post in posts:
         if post.type.type == "Gallery":
@@ -87,5 +87,24 @@ def show_category():
     cats = Category.objects.all()
     context = {
         'cats' : cats,
+    }
+    return context
+
+@register.inclusion_tag('blog/prev-next.html')
+def show_prev_next(pid):
+    posts = Post.objects.filter(status = 1, published_date__lte=timezone.now())
+    post = get_object_or_404(posts,id=pid)
+    index = list(posts).index(post)
+    prev_post = list(posts)[index-1]
+    len_list = len(list(posts))-1
+    if index != len_list:
+        next_post = list(posts)[index+1]
+    else:
+        next_post = list(posts)[0]
+    context = {
+        'index': index,
+        'len_list': len_list,
+        'prev_post': prev_post,
+        'next_post': next_post,
     }
     return context
