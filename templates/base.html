@@ -61,10 +61,10 @@
 
                 <div class="header__search">
 
-                    <form role="search" method="get" class="header__search-form" action="#">
+                    <form role="search" method="get" class="header__search-form" action="{% url 'blog:search' %}">
                         <label>
                             <span class="hide-content">Search for:</span>
-                            <input type="search" class="search-field" placeholder="Type Keywords" value="" name="s"
+                            <input type="search" class="search-field" placeholder="Type Keywords" value="" name="q"
                                 title="Search for:" autocomplete="off">
                         </label>
                         <input type="submit" class="search-submit" value="Search">
@@ -85,14 +85,7 @@
                         <li class="current"><a href="{% url 'website:index' %}" title="">Home</a></li>
                         <li class="has-children">
                             <a href="#0" title="">Categories</a>
-                            <ul class="sub-menu">
-                                <li><a href="category.html">Lifestyle</a></li>
-                                <li><a href="category.html">Health</a></li>
-                                <li><a href="category.html">Family</a></li>
-                                <li><a href="category.html">Management</a></li>
-                                <li><a href="category.html">Travel</a></li>
-                                <li><a href="category.html">Work</a></li>
-                            </ul>
+                            {% show_category %}
                         </li>
                         <li class="has-children">
                             <a href="#0" title="">Blog</a>

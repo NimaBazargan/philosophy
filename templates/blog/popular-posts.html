@@ -17,7 +17,7 @@
             </a>
             <h5><a href="{% url 'blog:single' pid=post.id %}">{{post.title}}</a></h5>
             <section class="popular__meta">
-                <span class="popular__author"><span>By</span> <a href="#0">{{post.author.get_full_name}}</a></span>
+                <span class="popular__author"><span>By</span> <a href="{% url 'blog:author' author_username=post.author %}">{{post.author.get_full_name}}</a></span>
                 <span class="popular__date"><span>on</span> <time datetime="2017-12-19">{% time pid=post.id %}</time></span>
             </section>
         </article>

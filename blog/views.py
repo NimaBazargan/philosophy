@@ -20,6 +20,15 @@ def index_view(request,**kwargs):
     gallerys = Gallery.objects.all()
     if kwargs.get('type'):
         posts = posts.filter(type__type = kwargs['type'])
+    if kwargs.get('cat_name'):
+        posts = posts.filter(category__name = kwargs['cat_name'])
+    if kwargs.get('tag_name'):
+        posts = posts.filter(tag__name__in = [kwargs['tag_name']])
+    if kwargs.get('author_username'):
+        posts = posts.filter(author__username = kwargs['author_username'])
+    if request.method == 'GET':
+        if q := request.GET.get('q'):
+            posts = posts.filter(content__contains = q)
     posts = Paginator(posts,4)
     try:
         page_number = request.GET.get('page')

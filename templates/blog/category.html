@@ -1,0 +1,5 @@
+<ul class="sub-menu">
+    {% for cat in cats %}
+    <li><a href="{% url 'blog:category' cat_name=cat %}">{{cat}}</a></li>
+    {% endfor %}
+</ul>

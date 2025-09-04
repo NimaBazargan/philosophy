@@ -1,5 +1,5 @@
 from django import template
-from blog.models import Post, Gallery
+from blog.models import Post, Gallery, Category
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from taggit.models import Tag
@@ -79,5 +79,13 @@ def show_tags():
     tags = Tag.objects.all()
     context = {
         'tags' : tags
+    }
+    return context
+
+@register.inclusion_tag('blog/category.html')
+def show_category():
+    cats = Category.objects.all()
+    context = {
+        'cats' : cats,
     }
     return context

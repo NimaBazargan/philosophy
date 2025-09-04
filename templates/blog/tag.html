@@ -4,7 +4,7 @@
 
         <div class="tagcloud">
             {% for tag in tags %}
-            <a href="#0">{{tag.name}}</a>
+            <a href="{% url 'blog:tag' tag_name=tag %}">{{tag.name}}</a>
             {% endfor %}
         </div> <!-- end tagcloud -->
     </div> <!-- end tags -->

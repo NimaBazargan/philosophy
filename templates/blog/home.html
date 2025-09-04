@@ -34,7 +34,7 @@
                     <div class="entry__meta">
                         <span class="entry__meta-links">
                             {% for cat in post.category.all %}
-                            <a href="category.html">{{cat}}</a>
+                            <a href="{% url 'blog:category' cat_name=cat %}">{{cat}}</a>
                             {% endfor %}
                         </span>
                     </div>
@@ -73,7 +73,7 @@
                     <div class="entry__meta">
                         <span class="entry__meta-links">
                             {% for cat in post.category.all %}
-                            <a href="category.html">{{cat}}</a>
+                            <a href="{% url 'blog:category' cat_name=cat %}">{{cat}}</a>
                             {% endfor %}
                         </span>
                     </div>
@@ -115,7 +115,7 @@
                     <div class="entry__meta">
                         <span class="entry__meta-links">
                             {% for cat in post.category.all %}
-                            <a href="category.html">{{cat}}</a>
+                            <a href="{% url 'blog:category' cat_name=cat %}">{{cat}}</a>
                             {% endfor %}
                         </span>
                     </div>
