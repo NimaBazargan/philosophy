@@ -1,4 +1,6 @@
 {% load static %}
+{% load blog_tags %}
+{% load humanize %}
 <!-- s-content
     ================================================== -->
 <section class="s-content">
@@ -24,7 +26,10 @@
                             <a href="single-standard.html">{{post.published_date|date:"D d/M/y"}}</a>
                         </div>
                         <h1 class="entry__title"><a href="{% url 'blog:single' pid=post.id %}">{{post.title}}</a></h1>
-
+                        <div class="entry__date">
+                            {% counted_views pid=post.id as views %}
+                            <a>{{views|intword}} views</a>
+                        </div>
                     </div>
                     <div class="entry__excerpt">
                         <p>
@@ -47,7 +52,7 @@
                 <div class="entry__thumb video-image">
                     <a href="{% url 'blog:single' pid=post.id %}" class="entry__thumb-link">
                         <video controls>
-                        <source src="{{post.video.url}}">
+                            <source src="{{post.video.url}}">
                         </video>
                         <!-- <img src="{% static 'images/thumbs/masonry/shutterbug-400.jpg' %}"
                             srcset="{% static 'images/thumbs/masonry/shutterbug-400.jpg' %} 1x, {% static 'images/thumbs/masonry/shutterbug-800.jpg' %} 2x"
@@ -63,11 +68,14 @@
                         </div>
                         <h1 class="entry__title"><a href="{% url 'blog:single' pid=post.id %}">{{post.title}}</a>
                         </h1>
-
+                        <div class="entry__date">
+                            {% counted_views pid=post.id as views %}
+                            <a>{{views|intword}} views</a>
+                        </div>
                     </div>
                     <div class="entry__excerpt">
                         <p>
-                           {{post.content|truncatewords:30|safe}}
+                            {{post.content|truncatewords:30|safe}}
                         </p>
                     </div>
                     <div class="entry__meta">
@@ -88,8 +96,7 @@
                         {% for gallery in gallerys %}
                         {% if gallery.post.id == post.id %}
                         <div class="slider__slide">
-                            <img src="{{gallery.image.url}}"
-                                srcset="{{gallery.image.url}} 1x, {{gallery.image.url}} 2x"
+                            <img src="{{gallery.image.url}}" srcset="{{gallery.image.url}} 1x, {{gallery.image.url}} 2x"
                                 alt="">
                         </div>
                         {% endif %}
@@ -105,7 +112,10 @@
                         </div>
                         <h1 class="entry__title"><a href="{% url 'blog:single' pid=post.id %}">{{post.title}}</a>
                         </h1>
-
+                        <div class="entry__date">
+                            {% counted_views pid=post.id as views %}
+                            <a>{{views|intword}} views</a>
+                        </div>
                     </div>
                     <div class="entry__excerpt">
                         <p>

@@ -2,6 +2,7 @@
 {% load static %}
 {% load blog_tags %}
 {% block content %}
+{% load humanize %}
 </div> <!-- end s-pageheader -->
 
 
@@ -23,7 +24,8 @@
                     <a href="{% url 'blog:category' cat_name=cat %}">{{cat}}</a>
                     {% endfor %}
                 </li>
-                <li class="view">{% counted_views pid=post.id %} views</li>
+                {% counted_views pid=post.id as views %}
+                <li class="view">{{views|intword}} views</li>
             </ul>
         </div> <!-- end s-content__header -->
 

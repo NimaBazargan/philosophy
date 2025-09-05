@@ -66,28 +66,29 @@
 
             <h3>Say Hello.</h3>
 
-            <form name="cForm" id="cForm" method="post" action="">
+            <form name="cForm" id="cForm" method="post" action="{% url 'website:contact' %}">
                 <fieldset>
-
+                    {% csrf_token %}
                     <div class="form-field">
-                        <input name="cName" type="text" id="cName" class="full-width" placeholder="Your Name" value="">
+                        <input name="name" type="text" id="cName" class="full-width" placeholder="Your Name" value="">
                     </div>
 
                     <div class="form-field">
-                        <input name="cEmail" type="text" id="cEmail" class="full-width" placeholder="Your Email"
+                        <input name="email" type="email" id="cEmail" class="full-width" placeholder="Your Email"
                             value="">
                     </div>
 
                     <div class="form-field">
-                        <input name="cWebsite" type="text" id="cWebsite" class="full-width" placeholder="Website"
+                        <input name="subject" type="text" id="cWebsite" class="full-width" placeholder="Subject"
                             value="">
                     </div>
 
                     <div class="message form-field">
-                        <textarea name="cMessage" id="cMessage" class="full-width"
-                            placeholder="Your Message"></textarea>
+                        <textarea name="message" id="cMessage" class="full-width" placeholder="Your Message"></textarea>
                     </div>
-
+                    <div class="pb-2">
+                        {{form.captcha}}
+                    </div>
                     <button type="submit" class="submit btn btn--primary full-width">Submit</button>
 
                 </fieldset>
