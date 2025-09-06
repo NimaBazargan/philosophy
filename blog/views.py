@@ -1,17 +1,39 @@
-from django.shortcuts import render
-from blog.models import Post,Gallery
+from django.shortcuts import render, redirect
+from blog.models import Post,Gallery, Comment
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from blog.forms import CommentForm
+from django.contrib import messages
 
 
-def sigle_view(request,pid):
+def single_view(request,**kwargs):
     posts = Post.objects.filter(status = 1, published_date__lte = timezone.now())
-    post = get_object_or_404(posts,id=pid)
+    post = get_object_or_404(posts,id=kwargs['pid'])
     gallerys = Gallery.objects.filter(post=post)
+    comments = Comment.objects.filter(post=kwargs['pid'], approved=True)
+    if kwargs.get('cid'):
+        parent = kwargs['cid']
+    else: 
+        parent = None
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request,messages.SUCCESS,'success')
+        else:
+            for errors in form.errors.values():
+                for error in errors:
+                    messages.add_message(request,messages.ERROR,f'{error}')
+        return redirect('blog:single',pid=post.id)
+    else:
+        form = CommentForm()
     context = {
         'post' : post,
         'gallerys' : gallerys,
+        'comments': comments,
+        'form':form,
+        'parent': parent,
     }
     return render(request,'blog/single.html',context)
 

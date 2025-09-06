@@ -15,15 +15,21 @@
                     {% endif %}
                     <div class="entry__content">
                         {% for cat in post.category.all %}
-                        <span class="entry__category"><a href="{% url 'blog:category' cat_name=cat %}">{{cat}}</a></span>
+                        <span class="entry__category"><a
+                                href="{% url 'blog:category' cat_name=cat %}">{{cat}}</a></span>
                         {% endfor %}
                         <h1><a href="{% url 'blog:single' pid=post.id %}" title="">{{post.title}}</a>
                         </h1>
 
                         <div class="entry__info">
+                            <a href="#0" class="entry__profile-pic">
+                                <img class="avatar" src="{% static 'images/unknown.jpg' %}" alt="">
+                            </a>
 
                             <ul class="entry__meta">
-                                <li><a href="{% url 'blog:author' author_username=post.author %}">{{post.author.get_full_name}}</a></li>
+                                <li><a
+                                        href="{% url 'blog:author' author_username=post.author %}">{{post.author.get_full_name}}</a>
+                                </li>
                                 <li>{{post.published_date|date:"D d/M/y"}}</li>
                             </ul>
                         </div>
@@ -45,14 +51,17 @@
                             {% endif %}
                             <div class="entry__content">
                                 {% for cat in post.category.all %}
-                                <span class="entry__category"><a href="{% url 'blog:category' cat_name=cat %}">{{cat}}</a></span>
+                                <span class="entry__category"><a
+                                        href="{% url 'blog:category' cat_name=cat %}">{{cat}}</a></span>
                                 {% endfor %}
                                 <h1><a href="{% url 'blog:single' pid=post.id %}" title="">{{post.title}}</a></h1>
 
                                 <div class="entry__info">
 
                                     <ul class="entry__meta">
-                                        <li><a href="{% url 'blog:author' author_username=post.author %}">{{post.author.get_full_name}}</a></li>
+                                        <li><a
+                                                href="{% url 'blog:author' author_username=post.author %}">{{post.author.get_full_name}}</a>
+                                        </li>
                                         <li>{{post.published_date|date:"D d/M/y"}}</li>
                                     </ul>
                                 </div>

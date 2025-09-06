@@ -1,5 +1,5 @@
 from django import template
-from blog.models import Post, Gallery, Category
+from blog.models import Post, Gallery, Category, Comment
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from taggit.models import Tag
@@ -108,3 +108,46 @@ def show_prev_next(pid):
         'next_post': next_post,
     }
     return context
+
+@register.simple_tag(name='timecomment')
+def function(pid):
+    comment = Comment.objects.get(id=pid)
+    current_time = timezone.now() - comment.created_date
+    if current_time.days < 1:
+        if current_time.seconds < 3600:
+            if current_time.seconds < 60:
+                return f"{current_time.seconds} Seconds ago"
+            else:
+                return f"{int(current_time.seconds/60)} Minutes ago"
+        else:
+            return f"{int(current_time.seconds/3600)} Hours ago"
+    if current_time.days < 31:
+        if timezone.now().month == comment.created_date.month:
+            return f"{current_time.days} Days ago"
+        else:
+            if timezone.now().day < comment.created_date.day:
+                return f"{current_time.days} Days ago"
+    if current_time.days < 366 :
+        if not (timezone.now().month == comment.created_date.month and timezone.now().day == comment.created_date.day):
+            now = comment.created_date.date()
+            return now.strftime("%d %b")
+        else:
+            return comment.created_date.strftime("%d %b %y")
+    else:
+        return comment.created_date.strftime("%d %b %y")
+    
+@register.inclusion_tag('blog/show-reply.html')
+def show_reply(pid,cid):
+    post = get_object_or_404(Post,id=pid)
+    comments = Comment.objects.filter(parent=cid,approved=True)
+    comment = get_object_or_404(Comment,id=cid)
+    reply = f"@{comment.name} "
+    return {'post': post, 'comments':comments, 'reply': reply}
+
+@register.inclusion_tag('blog/show-reply1.html')
+def show_reply1(pid,cid):
+    post = get_object_or_404(Post,id=pid)
+    comments = Comment.objects.filter(parent=cid,approved=True)
+    comment = get_object_or_404(Comment,id=cid)
+    reply = f"@{comment.name} "
+    return {'post': post, 'comments':comments, 'reply': reply}

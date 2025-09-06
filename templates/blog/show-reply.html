@@ -1,0 +1,34 @@
+{% load static %}
+{% load blog_tags %}
+
+<ul class="children">
+    {% for comment in comments %}
+    <li class="depth-2 comment">
+
+        <div class="comment__avatar">
+            <img width="50" height="50" class="avatar" src="{% static 'images/unknown.jpg' %}" alt="">
+        </div>
+
+        <div class="comment__content">
+
+            <div class="comment__info">
+                <cite>{{comment.name.get_full_name}}</cite>
+
+                <div class="comment__meta">
+                    <time class="comment__time">{% timecomment pid=comment.id %}</time>
+                    <a class="reply" href="{% url 'blog:reply' pid=post.id cid=comment.id %}#entercomment">Reply</a>
+                </div>
+            </div>
+
+            <div class="comment__text">
+                <p>{{reply}}{{comment.message}}</p>
+            </div>
+
+        </div>
+
+       {% show_reply1 pid=post.id cid=comment.id %}
+
+    </li>
+    {% endfor %}
+
+</ul>

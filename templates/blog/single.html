@@ -49,8 +49,7 @@
                     <div class="slider__slide">
                         <img src="{{gallery.image.url}}" srcset="{{gallery.image.url}} 2000w,
                                          {{gallery.image.url}} 1000w,
-                                         {{gallery.image.url}} 500w"
-                            sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                         {{gallery.image.url}} 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
                     </div>
                     {% endfor %}
                 </div>
@@ -107,12 +106,12 @@
         <div id="comments" class="row">
             <div class="col-full">
 
-                <h3 class="h2">5 Comments</h3>
+                <h3 class="h2">{{comments|length}} Comments</h3>
 
                 <!-- commentlist -->
                 <ol class="commentlist">
 
-                    <li class="depth-1 comment">
+                    <!-- <li class="depth-1 comment">
 
                         <div class="comment__avatar">
                             <img width="50" height="50" class="avatar" src="{% static 'images/avatars/user-01.jpg' %}"
@@ -139,105 +138,38 @@
 
                         </div>
 
-                    </li> <!-- end comment level 1 -->
-
+                    </li> end comment level 1 -->
+                    {% for comment in comments %}
+                    {% if not comment.parent %}
                     <li class="thread-alt depth-1 comment">
 
                         <div class="comment__avatar">
-                            <img width="50" height="50" class="avatar" src="{% static 'images/avatars/user-04.jpg' %}"
-                                alt="">
+                            <img width="50" height="50" class="avatar" src="{% static 'images/unknown.jpg' %}" alt="">
                         </div>
 
                         <div class="comment__content">
 
                             <div class="comment__info">
-                                <cite>John Doe</cite>
+                                <cite>{{comment.name.get_full_name}}</cite>
 
                                 <div class="comment__meta">
-                                    <time class="comment__time">Dec 16, 2017 @ 24:05</time>
-                                    <a class="reply" href="#0">Reply</a>
+                                    <time class="comment__time">{% timecomment pid=comment.id %}</time>
+                                    <a class="reply"
+                                        href="{% url 'blog:reply' pid=post.id cid=comment.id %}#entercomment">Reply</a>
                                 </div>
                             </div>
 
                             <div class="comment__text">
-                                <p>Sumo euismod dissentiunt ne sit, ad eos iudico qualisque adversarium, tota falli et
-                                    mei. Esse euismod
-                                    urbanitas ut sed, et duo scaevola pericula splendide. Primis veritus contentiones
-                                    nec ad, nec et
-                                    tantas semper delicatissimi.</p>
+                                <p>{{comment.message}}</p>
                             </div>
 
                         </div>
 
-                        <ul class="children">
-
-                            <li class="depth-2 comment">
-
-                                <div class="comment__avatar">
-                                    <img width="50" height="50" class="avatar"
-                                        src="{% static 'images/avatars/user-03.jpg' %}" alt="">
-                                </div>
-
-                                <div class="comment__content">
-
-                                    <div class="comment__info">
-                                        <cite>Kakashi Hatake</cite>
-
-                                        <div class="comment__meta">
-                                            <time class="comment__time">Dec 16, 2017 @ 25:05</time>
-                                            <a class="reply" href="#0">Reply</a>
-                                        </div>
-                                    </div>
-
-                                    <div class="comment__text">
-                                        <p>Duis sed odio sit amet nibh vulputate
-                                            cursus a sit amet mauris. Morbi accumsan ipsum velit. Duis sed odio sit amet
-                                            nibh vulputate
-                                            cursus a sit amet mauris</p>
-                                    </div>
-
-                                </div>
-
-                                <ul class="children">
-
-                                    <li class="depth-3 comment">
-
-                                        <div class="comment__avatar">
-                                            <img width="50" height="50" class="avatar"
-                                                src="{% static 'images/avatars/user-04.jpg' %}" alt="">
-                                        </div>
-
-                                        <div class="comment__content">
-
-                                            <div class="comment__info">
-                                                <cite>John Doe</cite>
-
-                                                <div class="comment__meta">
-                                                    <time class="comment__time">Dec 16, 2017 @ 25:15</time>
-                                                    <a class="reply" href="#0">Reply</a>
-                                                </div>
-                                            </div>
-
-                                            <div class="comment__text">
-                                                <p>Investigationes demonstraverunt lectores legere me lius quod ii
-                                                    legunt saepius. Claritas est
-                                                    etiam processus dynamicus, qui sequitur mutationem consuetudium
-                                                    lectorum.</p>
-                                            </div>
-
-                                        </div>
-
-                                    </li>
-
-                                </ul>
-
-                            </li>
-
-                        </ul>
-
+                        {% show_reply pid=post.id cid=comment.id %}
                     </li> <!-- end comment level 1 -->
-
-                    <li class="depth-1 comment">
+                    {% endif %}
+                    {% endfor %}
+                    <!-- <li class="depth-1 comment">
 
                         <div class="comment__avatar">
                             <img width="50" height="50" class="avatar" src="{% static 'images/avatars/user-02.jpg' %}"
@@ -262,37 +194,44 @@
 
                         </div>
 
-                    </li> <!-- end comment level 1 -->
+                    </li> end comment level 1 -->
 
                 </ol> <!-- end commentlist -->
 
 
                 <!-- respond
                     ================================================== -->
-                <div class="respond">
+                <div class="respond" id="entercomment">
 
                     <h3 class="h2">Add Comment</h3>
-
-                    <form name="contactForm" id="contactForm" method="post" action="">
+                    {% if parent %}
+                    <form name="contactForm" id="contactForm" method="post"
+                        action="{% url 'blog:single' pid=post.id %}">
+                        {% csrf_token %}
                         <fieldset>
-
                             <div class="form-field">
-                                <input name="cName" type="text" id="cName" class="full-width" placeholder="Your Name"
-                                    value="">
+                                <input type="hidden" name="parent" value='{{parent}}'>
+                            </div>
+                            <div class="form-field">
+                                <input type="hidden" name="post" value={{post.id}}>
+                            </div>
+                            <div class="form-field">
+                                <input name="name" type="hidden" id="cName" class="full-width" placeholder="Your Name"
+                                    value="{{request.user.id}}">
                             </div>
 
                             <div class="form-field">
-                                <input name="cEmail" type="text" id="cEmail" class="full-width" placeholder="Your Email"
-                                    value="">
+                                <input name="email" type="hidden" id="cEmail" class="full-width"
+                                    placeholder="Your Email" value="{{request.user.email}}">
                             </div>
 
                             <div class="form-field">
-                                <input name="cWebsite" type="text" id="cWebsite" class="full-width"
-                                    placeholder="Website" value="">
+                                <input name="subject" type="text" id="cWebsite" class="full-width" placeholder="Subject"
+                                    value="">
                             </div>
 
                             <div class="message form-field">
-                                <textarea name="cMessage" id="cMessage" class="full-width"
+                                <textarea name="message" id="cMessage" class="full-width"
                                     placeholder="Your Message"></textarea>
                             </div>
 
@@ -300,6 +239,42 @@
 
                         </fieldset>
                     </form> <!-- end form -->
+                    {% else %}
+                    <form name="contactForm" id="contactForm" method="post"
+                        action="{% url 'blog:single' pid=post.id %}">
+                        {% csrf_token %}
+                        <fieldset>
+                            <div class="form-field">
+                                <input type="hidden" name="parent" value=''>
+                            </div>
+                            <div class="form-field">
+                                <input type="hidden" name="post" value={{post.id}}>
+                            </div>
+                            <div class="form-field">
+                                <input name="name" type="hidden" id="cName" class="full-width" placeholder="Your Name"
+                                    value="{{request.user.id}}">
+                            </div>
+
+                            <div class="form-field">
+                                <input name="email" type="hidden" id="cEmail" class="full-width"
+                                    placeholder="Your Email" value="{{request.user.email}}">
+                            </div>
+
+                            <div class="form-field">
+                                <input name="subject" type="text" id="cWebsite" class="full-width" placeholder="Subject"
+                                    value="">
+                            </div>
+
+                            <div class="message form-field">
+                                <textarea name="message" id="cMessage" class="full-width"
+                                    placeholder="Your Message"></textarea>
+                            </div>
+
+                            <button type="submit" class="submit btn--primary btn--large full-width">Submit</button>
+
+                        </fieldset>
+                    </form> <!-- end form -->
+                    {% endif %}
 
                 </div> <!-- end respond -->
 
